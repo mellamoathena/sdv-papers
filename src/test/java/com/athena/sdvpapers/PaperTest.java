@@ -7,19 +7,20 @@ public class PaperTest {
 
 	@Test
 	public void testPaperHasTitleAndYear() {
-		Paper paper = new Paper("Anomaly Detection for IDPS", 2021);
+		Paper paper = new Paper("1", "Anomaly Detection for IDPS", 2021);
+		assertEquals("1", paper.getId());
 		assertEquals("Anomaly Detection for IDPS", paper.getTitle());
 		assertEquals(2021, paper.getYear());
 	}
 	@Test
 	public void testNewPaperHasNoAuthors() {
-		Paper paper = new Paper("Anomaly Detection for IDPS", 2021);
+		Paper paper = new Paper("1","Anomaly Detection for IDPS", 2021);
 		assertTrue(paper.getAuthors().isEmpty());
 	}
 
 	@Test
 	public void testAddAuthorToPaper() {
-		Paper paper = new Paper("Anomaly Detection for IDPS", 2021);
+		Paper paper = new Paper("1","Anomaly Detection for IDPS", 2021);
 		Author author = new Author("Bondavalli");
 		paper.addAuthor(author);
 		assertTrue(paper.getAuthors().contains(author));
