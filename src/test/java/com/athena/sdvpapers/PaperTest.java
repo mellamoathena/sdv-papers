@@ -21,7 +21,7 @@ public class PaperTest {
 	@Test
 	public void testAddAuthorToPaper() {
 		Paper paper = new Paper("1","Anomaly Detection for IDPS", 2021);
-		Author author = new Author("Bondavalli");
+		Author author = new Author("1", "Bondavalli");
 		paper.addAuthor(author);
 		assertTrue(paper.getAuthors().contains(author));
 	}

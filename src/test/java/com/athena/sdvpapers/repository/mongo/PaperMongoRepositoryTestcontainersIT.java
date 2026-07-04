@@ -26,6 +26,7 @@ import com.mongodb.client.MongoDatabase;
 @Testcontainers
 class PaperMongoRepositoryTestcontainersIT {
 
+	@SuppressWarnings("resource") // Testcontainers manages the container lifecycle, making the leak warning a false positive.
 	@Container
 	static final MongoDBContainer mongo =
 		new MongoDBContainer("mongo:5")
@@ -69,7 +70,26 @@ class PaperMongoRepositoryTestcontainersIT {
 		assertThat(readAllPapersFromDatabase())
 			.containsExactly(paper);
 	}
+	@Test
+	void testFindById() {
+		addTestPaperToDatabase("1", "test1", 2021);
+		addTestPaperToDatabase("2", "test2", 2022);
+		assertThat(paperRepository.findById("2"))
+			.isEqualTo(new Paper("2", "test2", 2022));
+	}
 
+	@Test
+	void testFindByIdNotFound() {
+		assertThat(paperRepository.findById("1")).isNull();
+	}
+
+	@Test
+	void testDelete() {
+		addTestPaperToDatabase("1", "test1", 2021);
+		paperRepository.delete("1");
+		assertThat(readAllPapersFromDatabase())
+			.isEmpty();
+	}
 	private void addTestPaperToDatabase(String id, String title, int year) {
 		paperCollection.insertOne(
 			new Document()
