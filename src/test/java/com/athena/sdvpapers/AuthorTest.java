@@ -6,18 +6,20 @@ import org.junit.jupiter.api.Test;
 public class AuthorTest {
 
 	@Test
-	public void testAuthorHasName() {
-		Author author = new Author("Bondavalli");
+	public void testAuthorHasIdAndName() {
+		Author author = new Author("1", "Bondavalli");
+		assertEquals("1", author.getId());
 		assertEquals("Bondavalli", author.getName());
 	}
+	
 	@Test
 	public void testNewAuthorHasNoPapers() {
-		Author author = new Author("Bondavalli");
+		Author author = new Author("1", "Bondavalli");
 		assertTrue(author.getPapers().isEmpty());
 	}
 	@Test
 	public void testAddPaperToAuthor() {
-		Author author = new Author("Bondavalli");
+		Author author = new Author("1", "Bondavalli");
 		Paper paper = new Paper("1","Anomaly Detection for IDPS", 2021);
 		author.addPaper(paper);
 		assertTrue(author.getPapers().contains(paper));
