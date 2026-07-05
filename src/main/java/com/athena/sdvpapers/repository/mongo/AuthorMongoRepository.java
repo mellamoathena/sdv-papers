@@ -7,6 +7,7 @@ import java.util.stream.StreamSupport;
 import org.bson.Document;
 
 import com.athena.sdvpapers.Author;
+import com.athena.sdvpapers.Paper;
 import com.athena.sdvpapers.repository.AuthorRepository;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -47,10 +48,14 @@ public class AuthorMongoRepository implements AuthorRepository {
 
 	@Override
 	public void save(Author author) {
-		authorCollection.insertOne(
+		List<String> paperIds = author.getPapers().stream()
+				.map(Paper::getId)
+				.collect(Collectors.toList());
+			authorCollection.insertOne(
 			new Document()
 				.append("id", author.getId())
-				.append("name", author.getName()));
+				.append("name", author.getName())
+				.append("paperIds", paperIds));
 	}
 
 	@Override

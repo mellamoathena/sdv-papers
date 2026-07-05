@@ -18,6 +18,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.athena.sdvpapers.Author;
+import com.athena.sdvpapers.Paper;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -100,5 +101,15 @@ class AuthorMongoRepositoryTestcontainersIT {
 			.stream(authorCollection.find().spliterator(), false)
 			.map(d -> new Author("" + d.get("id"), "" + d.get("name")))
 			.collect(Collectors.toList());
+	}
+	@Test
+	void testSaveAuthorWithPapersStoresPaperIds() {
+		Author author = new Author("1", "Bondavalli");
+		author.addPaper(new Paper("10", "IDPS for SDV", 2021));
+		author.addPaper(new Paper("20", "Anomaly Detection", 2022));
+		authorRepository.save(author);
+		Document savedDoc = authorCollection.find().first();
+		assertThat(savedDoc.getList("paperIds", String.class))
+			.containsExactly("10", "20");
 	}
 }
