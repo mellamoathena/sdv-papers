@@ -87,4 +87,21 @@ class AuthorControllerTest {
 		verify(authorView).showErrorAuthorNotFound(author);
 		verifyNoMoreInteractions(authorRepository);
 	}
+	@Test
+	void testAddPaperToAuthorWhenAuthorExists() {
+		Author author = new Author("1", "Bondavalli");
+		when(authorRepository.findById("1")).thenReturn(author);
+		authorController.addPaperToAuthor(author, "10");
+		verify(authorRepository).save(author);
+		verify(authorView).authorUpdated(author);
+	}
+
+	@Test
+	void testAddPaperToAuthorWhenAuthorDoesNotExist() {
+		Author author = new Author("1", "Bondavalli");
+		when(authorRepository.findById("1")).thenReturn(null);
+		authorController.addPaperToAuthor(author, "10");
+		verify(authorView).showErrorAuthorNotFound(author);
+		verifyNoMoreInteractions(authorRepository);
+	}
 }

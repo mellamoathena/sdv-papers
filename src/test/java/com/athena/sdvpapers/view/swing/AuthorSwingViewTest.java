@@ -165,4 +165,16 @@ public class AuthorSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withText("Delete Selected")).click();
 		verify(authorController).deleteAuthor(author2);
 	}
+	
+	@Test
+	public void testAuthorUpdatedShouldReplaceTheAuthorInTheListAndResetErrorLabel() {
+		Author author = new Author("1", "test1");
+		GuiActionRunner.execute(() -> authorSwingView.getListAuthorsModel().addElement(author));
+		Author updated = new Author("1", "test1");
+		updated.addPaperId("10");
+		GuiActionRunner.execute(() -> authorSwingView.authorUpdated(updated));
+		String[] listContents = window.list().contents();
+		assertThat(listContents).containsExactly(updated.toString());
+		window.label("errorMessageLabel").requireText(" ");
+	}
 }

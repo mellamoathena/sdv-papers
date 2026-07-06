@@ -38,4 +38,14 @@ public class AuthorController {
 		authorRepository.delete(author.getId());
 		authorView.authorRemoved(author);
 	}
+	public void addPaperToAuthor(Author author, String paperId) {
+		Author existing = authorRepository.findById(author.getId());
+		if (existing == null) {
+			authorView.showErrorAuthorNotFound(author);
+			return;
+		}
+		existing.addPaperId(paperId);
+		authorRepository.save(existing);
+		authorView.authorUpdated(existing);
+	}
 }
