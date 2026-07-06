@@ -7,7 +7,6 @@ import java.util.stream.StreamSupport;
 import org.bson.Document;
 
 import com.athena.sdvpapers.Author;
-import com.athena.sdvpapers.Paper;
 import com.athena.sdvpapers.repository.AuthorRepository;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -34,8 +33,14 @@ public class AuthorMongoRepository implements AuthorRepository {
 			.collect(Collectors.toList());
 	}
 
+	@SuppressWarnings("unchecked")
 	private Author fromDocumentToAuthor(Document d) {
-		return new Author("" + d.get("id"), "" + d.get("name"));
+		Author author = new Author("" + d.get("id"), "" + d.get("name"));
+		List<String> paperIds = (List<String>) d.get("paperIds");
+		if (paperIds != null) {
+			paperIds.forEach(author::addPaperId);
+		}
+		return author;
 	}
 
 	@Override
@@ -48,14 +53,11 @@ public class AuthorMongoRepository implements AuthorRepository {
 
 	@Override
 	public void save(Author author) {
-		List<String> paperIds = author.getPapers().stream()
-				.map(Paper::getId)
-				.collect(Collectors.toList());
-			authorCollection.insertOne(
+		authorCollection.insertOne(
 			new Document()
 				.append("id", author.getId())
 				.append("name", author.getName())
-				.append("paperIds", paperIds));
+				.append("paperIds", author.getPaperIds()));
 	}
 
 	@Override

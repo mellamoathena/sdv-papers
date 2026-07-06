@@ -18,7 +18,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.athena.sdvpapers.Author;
-import com.athena.sdvpapers.Paper;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -105,11 +104,20 @@ class AuthorMongoRepositoryTestcontainersIT {
 	@Test
 	void testSaveAuthorWithPapersStoresPaperIds() {
 		Author author = new Author("1", "Bondavalli");
-		author.addPaper(new Paper("10", "IDPS for SDV", 2021));
-		author.addPaper(new Paper("20", "Anomaly Detection", 2022));
+		author.addPaperId("10");
+		author.addPaperId("20");
 		authorRepository.save(author);
 		Document savedDoc = authorCollection.find().first();
 		assertThat(savedDoc.getList("paperIds", String.class))
 			.containsExactly("10", "20");
+	}
+	@Test
+	void testSaveAndFindByIdReturnsPaperIds() {
+		Author author = new Author("1", "Bondavalli");
+		author.addPaperId("10");
+		author.addPaperId("20");
+		authorRepository.save(author);
+		Author loaded = authorRepository.findById("1");
+		assertThat(loaded.getPaperIds()).containsExactly("10", "20");
 	}
 }

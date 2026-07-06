@@ -41,7 +41,6 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 
 	private AuthorController authorController;
 
-	// Launch the application (used for end-to-end tests later)
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
@@ -53,12 +52,10 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		});
 	}
 
-	// Package-private getter used by tests to manipulate the list directly
 	DefaultListModel<Author> getListAuthorsModel() {
 		return listAuthorsModel;
 	}
 
-	// Controller injected after construction (breaks the view<->controller cycle)
 	public void setAuthorController(AuthorController authorController) {
 		this.authorController = authorController;
 	}
@@ -77,7 +74,6 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
 
-		// "id" label
 		JLabel lblId = new JLabel("id");
 		GridBagConstraints gbc_lblId = new GridBagConstraints();
 		gbc_lblId.insets = new Insets(0, 0, 5, 5);
@@ -86,7 +82,6 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		gbc_lblId.gridy = 0;
 		contentPane.add(lblId, gbc_lblId);
 
-		// id text field. The KeyAdapter enables Add only when both fields are non-blank
 		txtId = new JTextField();
 		KeyAdapter btnAddEnabler = new KeyAdapter() {
 			@Override
@@ -97,7 +92,7 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 			}
 		};
 		txtId.addKeyListener(btnAddEnabler);
-		txtId.setName("idTextBox"); // name used by AssertJ-Swing to find it
+		txtId.setName("idTextBox");
 		GridBagConstraints gbc_txtId = new GridBagConstraints();
 		gbc_txtId.insets = new Insets(0, 0, 5, 0);
 		gbc_txtId.fill = GridBagConstraints.HORIZONTAL;
@@ -106,7 +101,6 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		contentPane.add(txtId, gbc_txtId);
 		txtId.setColumns(10);
 
-		// "name" label
 		JLabel lblName = new JLabel("name");
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
 		gbc_lblName.anchor = GridBagConstraints.EAST;
@@ -115,7 +109,6 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		gbc_lblName.gridy = 1;
 		contentPane.add(lblName, gbc_lblName);
 
-		// name text field
 		txtName = new JTextField();
 		txtName.addKeyListener(btnAddEnabler);
 		txtName.setName("nameTextBox");
@@ -127,7 +120,6 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		contentPane.add(txtName, gbc_txtName);
 		txtName.setColumns(10);
 
-		// Add button: disabled initially; delegates to controller.newAuthor(...)
 		btnAdd = new JButton("Add");
 		btnAdd.setEnabled(false);
 		btnAdd.addActionListener(
@@ -139,7 +131,6 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		gbc_btnAdd.gridy = 2;
 		contentPane.add(btnAdd, gbc_btnAdd);
 
-		// Scrollable list of authors
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
@@ -149,7 +140,6 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		gbc_scrollPane.gridy = 3;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
-		// The list + its model. Delete enabled only when an item is selected
 		listAuthorsModel = new DefaultListModel<>();
 		listAuthors = new JList<>(listAuthorsModel);
 		listAuthors.addListSelectionListener(
@@ -158,7 +148,6 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		listAuthors.setName("authorList");
 		scrollPane.setViewportView(listAuthors);
 
-		// Delete button: disabled initially; delegates to controller.deleteAuthor(...)
 		btnDeleteSelected = new JButton("Delete Selected");
 		btnDeleteSelected.setEnabled(false);
 		btnDeleteSelected.addActionListener(
@@ -170,7 +159,6 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		gbc_btnDeleteSelected.gridy = 4;
 		contentPane.add(btnDeleteSelected, gbc_btnDeleteSelected);
 
-		// Error label at the bottom
 		lblErrorMessage = new JLabel(" ");
 		lblErrorMessage.setForeground(Color.RED);
 		lblErrorMessage.setName("errorMessageLabel");
@@ -206,7 +194,17 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		resetErrorLabel();
 	}
 
-	// Your AuthorView also declares showErrorAuthorNotFound — implement it
+	@Override
+	public void authorUpdated(Author author) {
+		for (int i = 0; i < listAuthorsModel.getSize(); i++) {
+			if (listAuthorsModel.getElementAt(i).getId().equals(author.getId())) {
+				listAuthorsModel.setElementAt(author, i);
+				break;
+			}
+		}
+		resetErrorLabel();
+	}
+
 	@Override
 	public void showErrorAuthorNotFound(Author author) {
 		lblErrorMessage.setText("Author not found: " + author);

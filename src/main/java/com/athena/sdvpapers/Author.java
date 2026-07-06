@@ -8,6 +8,7 @@ public class Author {
 	private String id;
 	private String name;
 	private List<Paper> papers = new ArrayList<>();
+	private List<String> paperIds = new ArrayList<>();
 
 	public Author(String id, String name) {
 		this.id = id;
@@ -45,5 +46,17 @@ public class Author {
 
 	public void addPaper(Paper paper) {
 		papers.add(paper);
+	}
+
+	public List<String> getPaperIds() {
+		return paperIds;
+	}
+
+	public void addPaperId(String id) {
+		paperIds.add(id);
+	}
+	@Override
+	public String toString() {
+		return id + " - " + name + " " + paperIds;
 	}
 }

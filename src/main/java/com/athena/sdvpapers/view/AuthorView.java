@@ -14,4 +14,6 @@ public interface AuthorView {
 	void showError(String message, Author author);
 
 	void showErrorAuthorNotFound(Author author);
+	
+	void authorUpdated(Author author);
 }

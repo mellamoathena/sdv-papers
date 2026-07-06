@@ -24,5 +24,17 @@ public class AuthorTest {
 		author.addPaper(paper);
 		assertTrue(author.getPapers().contains(paper));
 	}
+	@Test
+	public void testNewAuthorHasNoPaperIds() {
+		Author author = new Author("1", "Bondavalli");
+		assertTrue(author.getPaperIds().isEmpty());
+	}
+
+	@Test
+	public void testAddPaperId() {
+		Author author = new Author("1", "Bondavalli");
+		author.addPaperId("10");
+		assertTrue(author.getPaperIds().contains("10"));
+	}
 
 }
