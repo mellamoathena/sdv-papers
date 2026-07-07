@@ -209,4 +209,14 @@ public class AuthorSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withText("Add Paper To Author")).click();
 		verify(authorController).addPaperToAuthor(author, "10");
 	}
+	@Test
+	public void testAuthorUpdatedWhenAuthorNotInListDoesNothingToList() {
+		Author existing = new Author("1", "test1");
+		GuiActionRunner.execute(() -> authorSwingView.getListAuthorsModel().addElement(existing));
+		Author notInList = new Author("2", "other");
+		notInList.addPaperId("10");
+		GuiActionRunner.execute(() -> authorSwingView.authorUpdated(notInList));
+		String[] listContents = window.list().contents();
+		assertThat(listContents).containsExactly(existing.toString());
+	}
 }

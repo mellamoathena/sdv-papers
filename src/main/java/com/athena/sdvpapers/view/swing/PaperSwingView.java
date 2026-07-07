@@ -1,7 +1,6 @@
 package com.athena.sdvpapers.view.swing;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -41,21 +40,7 @@ public class PaperSwingView extends JFrame implements PaperView {
 	private DefaultListModel<Paper> listPapersModel;
 
 	private PaperController paperController;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					PaperSwingView frame = new PaperSwingView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	DefaultListModel<Paper> getListPapersModel() {
 		return listPapersModel;
 	}
