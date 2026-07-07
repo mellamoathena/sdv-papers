@@ -73,5 +73,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
   <version>5.10.2</version>
   <scope>test</scope>
 </dependency>
+<dependency>
+  <groupId>info.picocli</groupId>
+  <artifactId>picocli</artifactId>
+  <version>4.7.6</version>
+</dependency>
 </dependencies>
 </project>

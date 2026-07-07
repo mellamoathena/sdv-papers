@@ -61,6 +61,10 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 	public void setAuthorController(AuthorController authorController) {
 		this.authorController = authorController;
 	}
+	public void start() {
+		setVisible(true);
+		authorController.allAuthors();
+	}
 
 	public AuthorSwingView() {
 		setTitle("Author View");

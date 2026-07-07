@@ -19,10 +19,10 @@ public class AuthorMongoRepository implements AuthorRepository {
 
 	private MongoCollection<Document> authorCollection;
 
-	public AuthorMongoRepository(MongoClient client) {
+	public AuthorMongoRepository(MongoClient client, String databaseName, String collectionName) {
 		authorCollection = client
-			.getDatabase(SDVPAPERS_DB_NAME)
-			.getCollection(AUTHOR_COLLECTION_NAME);
+			.getDatabase(databaseName)
+			.getCollection(collectionName);
 	}
 
 	@Override
