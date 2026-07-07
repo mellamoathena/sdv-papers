@@ -83,7 +83,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
     </dependency>
   </dependencies>
 
- <build>
+<build>
     <plugins>
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -146,6 +146,29 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.16.1</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-junit5-plugin</artifactId>
+            <version>1.2.1</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <targetClasses>
+            <param>com.athena.sdvpapers.repository.mongo.*</param>
+            <param>com.athena.sdvpapers.controller.*</param>
+          </targetClasses>
+          <targetTests>
+            <param>com.athena.sdvpapers.repository.mongo.*</param>
+            <param>com.athena.sdvpapers.controller.*</param>
+          </targetTests>
+          <mutationThreshold>100</mutationThreshold>
+        </configuration>
       </plugin>
     </plugins>
   </build>
