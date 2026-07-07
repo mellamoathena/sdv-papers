@@ -41,7 +41,7 @@ class AuthorMongoRepositoryTestcontainersIT {
 	void setup() {
 		client = MongoClients.create(
 			"mongodb://" + mongo.getHost() + ":" + mongo.getFirstMappedPort());
-		authorRepository = new AuthorMongoRepository(client);
+		authorRepository = new AuthorMongoRepository(client, SDVPAPERS_DB_NAME, AUTHOR_COLLECTION_NAME);
 		MongoDatabase database = client.getDatabase(SDVPAPERS_DB_NAME);
 		database.drop();
 		authorCollection = database.getCollection(AUTHOR_COLLECTION_NAME);

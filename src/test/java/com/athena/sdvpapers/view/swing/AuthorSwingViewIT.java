@@ -43,8 +43,8 @@ public class AuthorSwingViewIT extends AssertJSwingJUnitTestCase {
 	protected void onSetUp() {
 		mongoClient = MongoClients.create(
 			"mongodb://" + mongo.getHost() + ":" + mongo.getFirstMappedPort());
-		authorRepository = new AuthorMongoRepository(mongoClient);
-		// start each test with a clean database
+		authorRepository = new AuthorMongoRepository(mongoClient,
+			AuthorMongoRepository.SDVPAPERS_DB_NAME, AuthorMongoRepository.AUTHOR_COLLECTION_NAME);
 		for (Author author : authorRepository.findAll()) {
 			authorRepository.delete(author.getId());
 		}
@@ -57,7 +57,6 @@ public class AuthorSwingViewIT extends AssertJSwingJUnitTestCase {
 		window = new FrameFixture(robot(), authorSwingView);
 		window.show();
 	}
-
 	@Override
 	protected void onTearDown() {
 		mongoClient.close();
