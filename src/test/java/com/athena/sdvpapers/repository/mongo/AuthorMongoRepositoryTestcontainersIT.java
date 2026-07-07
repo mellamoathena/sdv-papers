@@ -120,4 +120,12 @@ class AuthorMongoRepositoryTestcontainersIT {
 		Author loaded = authorRepository.findById("1");
 		assertThat(loaded.getPaperIds()).containsExactly("10", "20");
 	}
+	@Test
+	void testLoadModifySaveAddsPaperId() {
+		authorRepository.save(new Author("1", "test1"));
+		Author loaded = authorRepository.findById("1");
+		loaded.addPaperId("10");
+		authorRepository.save(loaded);
+		assertThat(authorRepository.findById("1").getPaperIds()).containsExactly("10");
+	}
 }

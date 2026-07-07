@@ -177,4 +177,36 @@ public class AuthorSwingViewTest extends AssertJSwingJUnitTestCase {
 		assertThat(listContents).containsExactly(updated.toString());
 		window.label("errorMessageLabel").requireText(" ");
 	}
+	@Test
+	public void testAddPaperToAuthorButtonEnabledOnlyWhenAuthorSelectedAndPaperIdNonEmpty() {
+		Author author = new Author("1", "test1");
+		GuiActionRunner.execute(() -> authorSwingView.getListAuthorsModel().addElement(author));
+		JButtonFixture linkButton =
+			window.button(JButtonMatcher.withText("Add Paper To Author"));
+
+		// no selection, no paper id -> disabled
+		linkButton.requireDisabled();
+
+		// select author but paper id empty -> still disabled
+		window.list("authorList").selectItem(0);
+		linkButton.requireDisabled();
+
+		// enter paper id with author selected -> enabled
+		window.textBox("paperIdTextBox").enterText("10");
+		linkButton.requireEnabled();
+
+		// clear selection -> disabled again
+		window.list("authorList").clearSelection();
+		linkButton.requireDisabled();
+	}
+
+	@Test
+	public void testAddPaperToAuthorButtonShouldDelegateToController() {
+		Author author = new Author("1", "test1");
+		GuiActionRunner.execute(() -> authorSwingView.getListAuthorsModel().addElement(author));
+		window.list("authorList").selectItem(0);
+		window.textBox("paperIdTextBox").enterText("10");
+		window.button(JButtonMatcher.withText("Add Paper To Author")).click();
+		verify(authorController).addPaperToAuthor(author, "10");
+	}
 }

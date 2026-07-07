@@ -11,6 +11,7 @@ import com.athena.sdvpapers.repository.PaperRepository;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ReplaceOptions;
 
 public class PaperMongoRepository implements PaperRepository {
 
@@ -47,11 +48,13 @@ public class PaperMongoRepository implements PaperRepository {
 
 	@Override
 	public void save(Paper paper) {
-		paperCollection.insertOne(
+		paperCollection.replaceOne(
+			Filters.eq("id", paper.getId()),
 			new Document()
 				.append("id", paper.getId())
 				.append("title", paper.getTitle())
-				.append("year", paper.getYear()));
+				.append("year", paper.getYear()),
+			new ReplaceOptions().upsert(true));
 	}
 
 	@Override

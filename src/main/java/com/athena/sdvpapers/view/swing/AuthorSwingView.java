@@ -35,6 +35,8 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 	private JList<Author> listAuthors;
 	private JScrollPane scrollPane;
 	private JButton btnDeleteSelected;
+	private JTextField txtPaperId;
+	private JButton btnAddPaperToAuthor;
 	private JLabel lblErrorMessage;
 
 	private DefaultListModel<Author> listAuthorsModel;
@@ -69,9 +71,9 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[] { 0, 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
 
 		JLabel lblId = new JLabel("id");
@@ -142,8 +144,10 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 
 		listAuthorsModel = new DefaultListModel<>();
 		listAuthors = new JList<>(listAuthorsModel);
-		listAuthors.addListSelectionListener(
-			e -> btnDeleteSelected.setEnabled(listAuthors.getSelectedIndex() != -1));
+		listAuthors.addListSelectionListener(e -> {
+			btnDeleteSelected.setEnabled(listAuthors.getSelectedIndex() != -1);
+			updateLinkButton();
+		});
 		listAuthors.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listAuthors.setName("authorList");
 		scrollPane.setViewportView(listAuthors);
@@ -159,6 +163,35 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		gbc_btnDeleteSelected.gridy = 4;
 		contentPane.add(btnDeleteSelected, gbc_btnDeleteSelected);
 
+		txtPaperId = new JTextField();
+		txtPaperId.setName("paperIdTextBox");
+		txtPaperId.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				updateLinkButton();
+			}
+		});
+		GridBagConstraints gbc_txtPaperId = new GridBagConstraints();
+		gbc_txtPaperId.insets = new Insets(0, 0, 5, 0);
+		gbc_txtPaperId.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtPaperId.gridwidth = 2;
+		gbc_txtPaperId.gridx = 0;
+		gbc_txtPaperId.gridy = 5;
+		contentPane.add(txtPaperId, gbc_txtPaperId);
+		txtPaperId.setColumns(10);
+
+		btnAddPaperToAuthor = new JButton("Add Paper To Author");
+		btnAddPaperToAuthor.setEnabled(false);
+		btnAddPaperToAuthor.addActionListener(
+			e -> authorController.addPaperToAuthor(
+				listAuthors.getSelectedValue(), txtPaperId.getText()));
+		GridBagConstraints gbc_btnAddPaperToAuthor = new GridBagConstraints();
+		gbc_btnAddPaperToAuthor.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAddPaperToAuthor.gridwidth = 2;
+		gbc_btnAddPaperToAuthor.gridx = 0;
+		gbc_btnAddPaperToAuthor.gridy = 6;
+		contentPane.add(btnAddPaperToAuthor, gbc_btnAddPaperToAuthor);
+
 		lblErrorMessage = new JLabel(" ");
 		lblErrorMessage.setForeground(Color.RED);
 		lblErrorMessage.setName("errorMessageLabel");
@@ -166,8 +199,14 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		gbc_lblErrorMessage.gridwidth = 2;
 		gbc_lblErrorMessage.insets = new Insets(0, 0, 0, 5);
 		gbc_lblErrorMessage.gridx = 0;
-		gbc_lblErrorMessage.gridy = 5;
+		gbc_lblErrorMessage.gridy = 7;
 		contentPane.add(lblErrorMessage, gbc_lblErrorMessage);
+	}
+
+	private void updateLinkButton() {
+		btnAddPaperToAuthor.setEnabled(
+			listAuthors.getSelectedValue() != null &&
+			!txtPaperId.getText().trim().isEmpty());
 	}
 
 	// --- AuthorView interface implementations ---
