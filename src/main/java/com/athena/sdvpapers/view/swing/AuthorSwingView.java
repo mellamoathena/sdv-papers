@@ -1,7 +1,6 @@
 package com.athena.sdvpapers.view.swing;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -42,18 +41,7 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 	private DefaultListModel<Author> listAuthorsModel;
 
 	private AuthorController authorController;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				AuthorSwingView frame = new AuthorSwingView();
-				frame.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-	}
-
+	
 	DefaultListModel<Author> getListAuthorsModel() {
 		return listAuthorsModel;
 	}

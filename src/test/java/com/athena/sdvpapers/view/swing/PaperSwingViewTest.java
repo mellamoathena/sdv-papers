@@ -89,6 +89,13 @@ public class PaperSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("yearTextBox").enterText("abc");
 		window.button(JButtonMatcher.withText("Add")).requireDisabled();
 	}
+	@Test
+	public void testWhenIdIsBlankThenAddButtonShouldBeDisabled() {
+		window.textBox("idTextBox").enterText(" ");
+		window.textBox("titleTextBox").enterText("test");
+		window.textBox("yearTextBox").enterText("2021");
+		window.button(JButtonMatcher.withText("Add")).requireDisabled();
+	}
 
 	@Test
 	public void testDeleteButtonShouldBeEnabledOnlyWhenAPaperIsSelected() {
