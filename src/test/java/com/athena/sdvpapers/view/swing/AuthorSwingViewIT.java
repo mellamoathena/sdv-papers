@@ -115,4 +115,14 @@ public class AuthorSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.label("errorMessageLabel")
 			.requireText("Author not found: " + author);
 	}
+	@Test
+	public void testAddPaperToAuthorSuccess() {
+		Author author = new Author("1", "test1");
+		authorRepository.save(author);
+		GuiActionRunner.execute(() -> authorController.allAuthors());
+		GuiActionRunner.execute(() ->
+			authorController.addPaperToAuthor(new Author("1", "test1"), "10"));
+		assertThat(authorRepository.findById("1").getPaperIds())
+			.containsExactly("10");
+	}
 }

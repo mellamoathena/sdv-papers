@@ -53,11 +53,13 @@ public class AuthorMongoRepository implements AuthorRepository {
 
 	@Override
 	public void save(Author author) {
-		authorCollection.insertOne(
+		authorCollection.replaceOne(
+			Filters.eq("id", author.getId()),
 			new Document()
 				.append("id", author.getId())
 				.append("name", author.getName())
-				.append("paperIds", author.getPaperIds()));
+				.append("paperIds", author.getPaperIds()),
+			new com.mongodb.client.model.ReplaceOptions().upsert(true));
 	}
 
 	@Override

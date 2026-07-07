@@ -104,4 +104,12 @@ class PaperMongoRepositoryTestcontainersIT {
 			.map(d -> new Paper("" + d.get("id"), "" + d.get("title"), (int) d.get("year")))
 			.collect(Collectors.toList());
 	}
+	@Test
+	void testSaveUpdatesExistingPaper() {
+		paperRepository.save(new Paper("1", "old title", 2020));
+		paperRepository.save(new Paper("1", "new title", 2021));
+		Paper loaded = paperRepository.findById("1");
+		assertThat(loaded.getTitle()).isEqualTo("new title");
+		assertThat(loaded.getYear()).isEqualTo(2021);
+	}
 }
