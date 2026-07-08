@@ -25,7 +25,7 @@ jobs:
       run: xvfb-run ./mvnw verify
     - name: Coveralls
       run: ./mvnw coveralls:report -DrepoToken=${{ secrets.COVERALLS_REPO_TOKEN }}
-	  - name: SonarCloud
-	        env:
-	          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-	        run: ./mvnw sonar:sonar -Dsonar.projectKey=mellamoathena_sdv-papers
+    - name: SonarCloud
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: ./mvnw sonar:sonar -Dsonar.projectKey=mellamoathena_sdv-papers
