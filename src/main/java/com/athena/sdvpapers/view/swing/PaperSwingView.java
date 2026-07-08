@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.athena.sdvpapers.Paper;
@@ -36,11 +37,9 @@ public class PaperSwingView extends JFrame implements PaperView {
 	private JScrollPane scrollPane;
 	private JButton btnDeleteSelected;
 	private JLabel lblErrorMessage;
-
 	private DefaultListModel<Paper> listPapersModel;
+	private transient PaperController paperController;
 
-	private PaperController paperController;
-	
 	DefaultListModel<Paper> getListPapersModel() {
 		return listPapersModel;
 	}
@@ -51,25 +50,25 @@ public class PaperSwingView extends JFrame implements PaperView {
 
 	public PaperSwingView() {
 		setTitle("Paper View");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] { 0, 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
-		contentPane.setLayout(gbl_contentPane);
+		GridBagLayout gblContentPane = new GridBagLayout();
+		gblContentPane.columnWidths = new int[] { 0, 0, 0 };
+		gblContentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+		gblContentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gblContentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
+		contentPane.setLayout(gblContentPane);
 
 		JLabel lblId = new JLabel("id");
-		GridBagConstraints gbc_lblId = new GridBagConstraints();
-		gbc_lblId.insets = new Insets(0, 0, 5, 5);
-		gbc_lblId.anchor = GridBagConstraints.EAST;
-		gbc_lblId.gridx = 0;
-		gbc_lblId.gridy = 0;
-		contentPane.add(lblId, gbc_lblId);
+		GridBagConstraints gbcLblId = new GridBagConstraints();
+		gbcLblId.insets = new Insets(0, 0, 5, 5);
+		gbcLblId.anchor = GridBagConstraints.EAST;
+		gbcLblId.gridx = 0;
+		gbcLblId.gridy = 0;
+		contentPane.add(lblId, gbcLblId);
 
 		txtId = new JTextField();
 		KeyAdapter btnAddEnabler = new KeyAdapter() {
@@ -83,50 +82,50 @@ public class PaperSwingView extends JFrame implements PaperView {
 		};
 		txtId.addKeyListener(btnAddEnabler);
 		txtId.setName("idTextBox");
-		GridBagConstraints gbc_txtId = new GridBagConstraints();
-		gbc_txtId.insets = new Insets(0, 0, 5, 0);
-		gbc_txtId.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtId.gridx = 1;
-		gbc_txtId.gridy = 0;
-		contentPane.add(txtId, gbc_txtId);
+		GridBagConstraints gbcTxtId = new GridBagConstraints();
+		gbcTxtId.insets = new Insets(0, 0, 5, 0);
+		gbcTxtId.fill = GridBagConstraints.HORIZONTAL;
+		gbcTxtId.gridx = 1;
+		gbcTxtId.gridy = 0;
+		contentPane.add(txtId, gbcTxtId);
 		txtId.setColumns(10);
 
 		JLabel lblTitle = new JLabel("title");
-		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
-		gbc_lblTitle.anchor = GridBagConstraints.EAST;
-		gbc_lblTitle.insets = new Insets(0, 0, 5, 5);
-		gbc_lblTitle.gridx = 0;
-		gbc_lblTitle.gridy = 1;
-		contentPane.add(lblTitle, gbc_lblTitle);
+		GridBagConstraints gbcLblTitle = new GridBagConstraints();
+		gbcLblTitle.anchor = GridBagConstraints.EAST;
+		gbcLblTitle.insets = new Insets(0, 0, 5, 5);
+		gbcLblTitle.gridx = 0;
+		gbcLblTitle.gridy = 1;
+		contentPane.add(lblTitle, gbcLblTitle);
 
 		txtTitle = new JTextField();
 		txtTitle.addKeyListener(btnAddEnabler);
 		txtTitle.setName("titleTextBox");
-		GridBagConstraints gbc_txtTitle = new GridBagConstraints();
-		gbc_txtTitle.insets = new Insets(0, 0, 5, 0);
-		gbc_txtTitle.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtTitle.gridx = 1;
-		gbc_txtTitle.gridy = 1;
-		contentPane.add(txtTitle, gbc_txtTitle);
+		GridBagConstraints gbcTxtTitle = new GridBagConstraints();
+		gbcTxtTitle.insets = new Insets(0, 0, 5, 0);
+		gbcTxtTitle.fill = GridBagConstraints.HORIZONTAL;
+		gbcTxtTitle.gridx = 1;
+		gbcTxtTitle.gridy = 1;
+		contentPane.add(txtTitle, gbcTxtTitle);
 		txtTitle.setColumns(10);
 
 		JLabel lblYear = new JLabel("year");
-		GridBagConstraints gbc_lblYear = new GridBagConstraints();
-		gbc_lblYear.anchor = GridBagConstraints.EAST;
-		gbc_lblYear.insets = new Insets(0, 0, 5, 5);
-		gbc_lblYear.gridx = 0;
-		gbc_lblYear.gridy = 2;
-		contentPane.add(lblYear, gbc_lblYear);
+		GridBagConstraints gbcLblYear = new GridBagConstraints();
+		gbcLblYear.anchor = GridBagConstraints.EAST;
+		gbcLblYear.insets = new Insets(0, 0, 5, 5);
+		gbcLblYear.gridx = 0;
+		gbcLblYear.gridy = 2;
+		contentPane.add(lblYear, gbcLblYear);
 
 		txtYear = new JTextField();
 		txtYear.addKeyListener(btnAddEnabler);
 		txtYear.setName("yearTextBox");
-		GridBagConstraints gbc_txtYear = new GridBagConstraints();
-		gbc_txtYear.insets = new Insets(0, 0, 5, 0);
-		gbc_txtYear.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtYear.gridx = 1;
-		gbc_txtYear.gridy = 2;
-		contentPane.add(txtYear, gbc_txtYear);
+		GridBagConstraints gbcTxtYear = new GridBagConstraints();
+		gbcTxtYear.insets = new Insets(0, 0, 5, 0);
+		gbcTxtYear.fill = GridBagConstraints.HORIZONTAL;
+		gbcTxtYear.gridx = 1;
+		gbcTxtYear.gridy = 2;
+		contentPane.add(txtYear, gbcTxtYear);
 		txtYear.setColumns(10);
 
 		btnAdd = new JButton("Add");
@@ -137,21 +136,21 @@ public class PaperSwingView extends JFrame implements PaperView {
 					txtId.getText(),
 					txtTitle.getText(),
 					Integer.parseInt(txtYear.getText()))));
-		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
-		gbc_btnAdd.insets = new Insets(0, 0, 5, 0);
-		gbc_btnAdd.gridwidth = 2;
-		gbc_btnAdd.gridx = 0;
-		gbc_btnAdd.gridy = 3;
-		contentPane.add(btnAdd, gbc_btnAdd);
+		GridBagConstraints gbcBtnAdd = new GridBagConstraints();
+		gbcBtnAdd.insets = new Insets(0, 0, 5, 0);
+		gbcBtnAdd.gridwidth = 2;
+		gbcBtnAdd.gridx = 0;
+		gbcBtnAdd.gridy = 3;
+		contentPane.add(btnAdd, gbcBtnAdd);
 
 		scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridwidth = 2;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 4;
-		contentPane.add(scrollPane, gbc_scrollPane);
+		GridBagConstraints gbcScrollPane = new GridBagConstraints();
+		gbcScrollPane.insets = new Insets(0, 0, 5, 0);
+		gbcScrollPane.fill = GridBagConstraints.BOTH;
+		gbcScrollPane.gridwidth = 2;
+		gbcScrollPane.gridx = 0;
+		gbcScrollPane.gridy = 4;
+		contentPane.add(scrollPane, gbcScrollPane);
 
 		listPapersModel = new DefaultListModel<>();
 		listPapers = new JList<>(listPapersModel);
@@ -165,27 +164,27 @@ public class PaperSwingView extends JFrame implements PaperView {
 		btnDeleteSelected.setEnabled(false);
 		btnDeleteSelected.addActionListener(
 			e -> paperController.deletePaper(listPapers.getSelectedValue()));
-		GridBagConstraints gbc_btnDeleteSelected = new GridBagConstraints();
-		gbc_btnDeleteSelected.insets = new Insets(0, 0, 5, 0);
-		gbc_btnDeleteSelected.gridwidth = 2;
-		gbc_btnDeleteSelected.gridx = 0;
-		gbc_btnDeleteSelected.gridy = 5;
-		contentPane.add(btnDeleteSelected, gbc_btnDeleteSelected);
+		GridBagConstraints gbcBtnDeleteSelected = new GridBagConstraints();
+		gbcBtnDeleteSelected.insets = new Insets(0, 0, 5, 0);
+		gbcBtnDeleteSelected.gridwidth = 2;
+		gbcBtnDeleteSelected.gridx = 0;
+		gbcBtnDeleteSelected.gridy = 5;
+		contentPane.add(btnDeleteSelected, gbcBtnDeleteSelected);
 
 		lblErrorMessage = new JLabel(" ");
 		lblErrorMessage.setForeground(Color.RED);
 		lblErrorMessage.setName("errorMessageLabel");
-		GridBagConstraints gbc_lblErrorMessage = new GridBagConstraints();
-		gbc_lblErrorMessage.gridwidth = 2;
-		gbc_lblErrorMessage.insets = new Insets(0, 0, 0, 5);
-		gbc_lblErrorMessage.gridx = 0;
-		gbc_lblErrorMessage.gridy = 6;
-		contentPane.add(lblErrorMessage, gbc_lblErrorMessage);
+		GridBagConstraints gbcLblErrorMessage = new GridBagConstraints();
+		gbcLblErrorMessage.gridwidth = 2;
+		gbcLblErrorMessage.insets = new Insets(0, 0, 0, 5);
+		gbcLblErrorMessage.gridx = 0;
+		gbcLblErrorMessage.gridy = 6;
+		contentPane.add(lblErrorMessage, gbcLblErrorMessage);
 	}
 
 	@Override
 	public void showAllPapers(List<Paper> papers) {
-		papers.stream().forEach(listPapersModel::addElement);
+		papers.forEach(listPapersModel::addElement);
 	}
 
 	@Override
@@ -214,7 +213,6 @@ public class PaperSwingView extends JFrame implements PaperView {
 		lblErrorMessage.setText(" ");
 	}
 
-	// No book template for an int field; validate year to avoid parse crash
 	private boolean isValidYear(String text) {
 		try {
 			Integer.parseInt(text.trim());

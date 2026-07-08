@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.athena.sdvpapers.Author;
@@ -37,11 +38,9 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 	private JTextField txtPaperId;
 	private JButton btnAddPaperToAuthor;
 	private JLabel lblErrorMessage;
-
 	private DefaultListModel<Author> listAuthorsModel;
+	private transient AuthorController authorController;
 
-	private AuthorController authorController;
-	
 	DefaultListModel<Author> getListAuthorsModel() {
 		return listAuthorsModel;
 	}
@@ -49,6 +48,7 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 	public void setAuthorController(AuthorController authorController) {
 		this.authorController = authorController;
 	}
+
 	public void start() {
 		setVisible(true);
 		authorController.allAuthors();
@@ -56,25 +56,25 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 
 	public AuthorSwingView() {
 		setTitle("Author View");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] { 0, 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		contentPane.setLayout(gbl_contentPane);
+		GridBagLayout gblContentPane = new GridBagLayout();
+		gblContentPane.columnWidths = new int[] { 0, 0, 0 };
+		gblContentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+		gblContentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gblContentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		contentPane.setLayout(gblContentPane);
 
 		JLabel lblId = new JLabel("id");
-		GridBagConstraints gbc_lblId = new GridBagConstraints();
-		gbc_lblId.insets = new Insets(0, 0, 5, 5);
-		gbc_lblId.anchor = GridBagConstraints.EAST;
-		gbc_lblId.gridx = 0;
-		gbc_lblId.gridy = 0;
-		contentPane.add(lblId, gbc_lblId);
+		GridBagConstraints gbcLblId = new GridBagConstraints();
+		gbcLblId.insets = new Insets(0, 0, 5, 5);
+		gbcLblId.anchor = GridBagConstraints.EAST;
+		gbcLblId.gridx = 0;
+		gbcLblId.gridy = 0;
+		contentPane.add(lblId, gbcLblId);
 
 		txtId = new JTextField();
 		KeyAdapter btnAddEnabler = new KeyAdapter() {
@@ -87,52 +87,52 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		};
 		txtId.addKeyListener(btnAddEnabler);
 		txtId.setName("idTextBox");
-		GridBagConstraints gbc_txtId = new GridBagConstraints();
-		gbc_txtId.insets = new Insets(0, 0, 5, 0);
-		gbc_txtId.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtId.gridx = 1;
-		gbc_txtId.gridy = 0;
-		contentPane.add(txtId, gbc_txtId);
+		GridBagConstraints gbcTxtId = new GridBagConstraints();
+		gbcTxtId.insets = new Insets(0, 0, 5, 0);
+		gbcTxtId.fill = GridBagConstraints.HORIZONTAL;
+		gbcTxtId.gridx = 1;
+		gbcTxtId.gridy = 0;
+		contentPane.add(txtId, gbcTxtId);
 		txtId.setColumns(10);
 
 		JLabel lblName = new JLabel("name");
-		GridBagConstraints gbc_lblName = new GridBagConstraints();
-		gbc_lblName.anchor = GridBagConstraints.EAST;
-		gbc_lblName.insets = new Insets(0, 0, 5, 5);
-		gbc_lblName.gridx = 0;
-		gbc_lblName.gridy = 1;
-		contentPane.add(lblName, gbc_lblName);
+		GridBagConstraints gbcLblName = new GridBagConstraints();
+		gbcLblName.anchor = GridBagConstraints.EAST;
+		gbcLblName.insets = new Insets(0, 0, 5, 5);
+		gbcLblName.gridx = 0;
+		gbcLblName.gridy = 1;
+		contentPane.add(lblName, gbcLblName);
 
 		txtName = new JTextField();
 		txtName.addKeyListener(btnAddEnabler);
 		txtName.setName("nameTextBox");
-		GridBagConstraints gbc_txtName = new GridBagConstraints();
-		gbc_txtName.insets = new Insets(0, 0, 5, 0);
-		gbc_txtName.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtName.gridx = 1;
-		gbc_txtName.gridy = 1;
-		contentPane.add(txtName, gbc_txtName);
+		GridBagConstraints gbcTxtName = new GridBagConstraints();
+		gbcTxtName.insets = new Insets(0, 0, 5, 0);
+		gbcTxtName.fill = GridBagConstraints.HORIZONTAL;
+		gbcTxtName.gridx = 1;
+		gbcTxtName.gridy = 1;
+		contentPane.add(txtName, gbcTxtName);
 		txtName.setColumns(10);
 
 		btnAdd = new JButton("Add");
 		btnAdd.setEnabled(false);
 		btnAdd.addActionListener(
 			e -> authorController.newAuthor(new Author(txtId.getText(), txtName.getText())));
-		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
-		gbc_btnAdd.insets = new Insets(0, 0, 5, 0);
-		gbc_btnAdd.gridwidth = 2;
-		gbc_btnAdd.gridx = 0;
-		gbc_btnAdd.gridy = 2;
-		contentPane.add(btnAdd, gbc_btnAdd);
+		GridBagConstraints gbcBtnAdd = new GridBagConstraints();
+		gbcBtnAdd.insets = new Insets(0, 0, 5, 0);
+		gbcBtnAdd.gridwidth = 2;
+		gbcBtnAdd.gridx = 0;
+		gbcBtnAdd.gridy = 2;
+		contentPane.add(btnAdd, gbcBtnAdd);
 
 		scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridwidth = 2;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 3;
-		contentPane.add(scrollPane, gbc_scrollPane);
+		GridBagConstraints gbcScrollPane = new GridBagConstraints();
+		gbcScrollPane.insets = new Insets(0, 0, 5, 0);
+		gbcScrollPane.fill = GridBagConstraints.BOTH;
+		gbcScrollPane.gridwidth = 2;
+		gbcScrollPane.gridx = 0;
+		gbcScrollPane.gridy = 3;
+		contentPane.add(scrollPane, gbcScrollPane);
 
 		listAuthorsModel = new DefaultListModel<>();
 		listAuthors = new JList<>(listAuthorsModel);
@@ -148,12 +148,12 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		btnDeleteSelected.setEnabled(false);
 		btnDeleteSelected.addActionListener(
 			e -> authorController.deleteAuthor(listAuthors.getSelectedValue()));
-		GridBagConstraints gbc_btnDeleteSelected = new GridBagConstraints();
-		gbc_btnDeleteSelected.insets = new Insets(0, 0, 5, 0);
-		gbc_btnDeleteSelected.gridwidth = 2;
-		gbc_btnDeleteSelected.gridx = 0;
-		gbc_btnDeleteSelected.gridy = 4;
-		contentPane.add(btnDeleteSelected, gbc_btnDeleteSelected);
+		GridBagConstraints gbcBtnDeleteSelected = new GridBagConstraints();
+		gbcBtnDeleteSelected.insets = new Insets(0, 0, 5, 0);
+		gbcBtnDeleteSelected.gridwidth = 2;
+		gbcBtnDeleteSelected.gridx = 0;
+		gbcBtnDeleteSelected.gridy = 4;
+		contentPane.add(btnDeleteSelected, gbcBtnDeleteSelected);
 
 		txtPaperId = new JTextField();
 		txtPaperId.setName("paperIdTextBox");
@@ -163,13 +163,13 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 				updateLinkButton();
 			}
 		});
-		GridBagConstraints gbc_txtPaperId = new GridBagConstraints();
-		gbc_txtPaperId.insets = new Insets(0, 0, 5, 0);
-		gbc_txtPaperId.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtPaperId.gridwidth = 2;
-		gbc_txtPaperId.gridx = 0;
-		gbc_txtPaperId.gridy = 5;
-		contentPane.add(txtPaperId, gbc_txtPaperId);
+		GridBagConstraints gbcTxtPaperId = new GridBagConstraints();
+		gbcTxtPaperId.insets = new Insets(0, 0, 5, 0);
+		gbcTxtPaperId.fill = GridBagConstraints.HORIZONTAL;
+		gbcTxtPaperId.gridwidth = 2;
+		gbcTxtPaperId.gridx = 0;
+		gbcTxtPaperId.gridy = 5;
+		contentPane.add(txtPaperId, gbcTxtPaperId);
 		txtPaperId.setColumns(10);
 
 		btnAddPaperToAuthor = new JButton("Add Paper To Author");
@@ -177,22 +177,22 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 		btnAddPaperToAuthor.addActionListener(
 			e -> authorController.addPaperToAuthor(
 				listAuthors.getSelectedValue(), txtPaperId.getText()));
-		GridBagConstraints gbc_btnAddPaperToAuthor = new GridBagConstraints();
-		gbc_btnAddPaperToAuthor.insets = new Insets(0, 0, 5, 0);
-		gbc_btnAddPaperToAuthor.gridwidth = 2;
-		gbc_btnAddPaperToAuthor.gridx = 0;
-		gbc_btnAddPaperToAuthor.gridy = 6;
-		contentPane.add(btnAddPaperToAuthor, gbc_btnAddPaperToAuthor);
+		GridBagConstraints gbcBtnAddPaperToAuthor = new GridBagConstraints();
+		gbcBtnAddPaperToAuthor.insets = new Insets(0, 0, 5, 0);
+		gbcBtnAddPaperToAuthor.gridwidth = 2;
+		gbcBtnAddPaperToAuthor.gridx = 0;
+		gbcBtnAddPaperToAuthor.gridy = 6;
+		contentPane.add(btnAddPaperToAuthor, gbcBtnAddPaperToAuthor);
 
 		lblErrorMessage = new JLabel(" ");
 		lblErrorMessage.setForeground(Color.RED);
 		lblErrorMessage.setName("errorMessageLabel");
-		GridBagConstraints gbc_lblErrorMessage = new GridBagConstraints();
-		gbc_lblErrorMessage.gridwidth = 2;
-		gbc_lblErrorMessage.insets = new Insets(0, 0, 0, 5);
-		gbc_lblErrorMessage.gridx = 0;
-		gbc_lblErrorMessage.gridy = 7;
-		contentPane.add(lblErrorMessage, gbc_lblErrorMessage);
+		GridBagConstraints gbcLblErrorMessage = new GridBagConstraints();
+		gbcLblErrorMessage.gridwidth = 2;
+		gbcLblErrorMessage.insets = new Insets(0, 0, 0, 5);
+		gbcLblErrorMessage.gridx = 0;
+		gbcLblErrorMessage.gridy = 7;
+		contentPane.add(lblErrorMessage, gbcLblErrorMessage);
 	}
 
 	private void updateLinkButton() {
@@ -201,11 +201,9 @@ public class AuthorSwingView extends JFrame implements AuthorView {
 			!txtPaperId.getText().trim().isEmpty());
 	}
 
-	// --- AuthorView interface implementations ---
-
 	@Override
 	public void showAllAuthors(List<Author> authors) {
-		authors.stream().forEach(listAuthorsModel::addElement);
+		authors.forEach(listAuthorsModel::addElement);
 	}
 
 	@Override
